@@ -5,4 +5,4 @@ client.once('ready', () => {
   console.log('Discord bot is online!');
 });
 
-client.login(process.env.TOKEN);
+client.login(process.env.token);
