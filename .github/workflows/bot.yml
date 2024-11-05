@@ -11,10 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3  # Updated to v3
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3  # Updated to v3
         with:
-          node-version: '18'  # Use '16' or '18' for compatibility with ReadableStream
+          node-version: '18'  # Using Node.js 18 for compatibility with ReadableStream
       - run: npm install
-      - run: node
+      - run: node index.js
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
