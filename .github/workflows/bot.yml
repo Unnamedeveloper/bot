@@ -1,6 +1,7 @@
 name: Run Discord Bot
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -14,8 +15,6 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Ensure compatibility with discord.js
+          node-version: '18'  # Use '16' or '18' for compatibility with ReadableStream
       - run: npm install
-      - run: node index.js
-        env:
-          TOKEN: ${{ secrets.TOKEN }}
+      - run: node
