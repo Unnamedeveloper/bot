@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config(); // Remove this line in GitHub Actions
 
 const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client({
