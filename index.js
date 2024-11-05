@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client({
   intents: [
@@ -17,5 +19,5 @@ client.on('messageCreate', message => {
   }
 });
 
-// Login using the token from the environment variable
-client.login(process.env.TOKEN);
+// Use process.env.TOKEN for the bot login
+client.login(process.env.TOKEN).catch(err => console.error("Failed to login:", err));
