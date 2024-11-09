@@ -1,29 +1,33 @@
+const axios = require('axios');
 const { Client, GatewayIntentBits } = require('discord.js');
 const TOKEN = process.env.TOKEN;
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 });
 
-let shutdownTimer;
-
-function resetShutdownTimer() {
-  if (shutdownTimer) clearTimeout(shutdownTimer);
-  shutdownTimer = setTimeout(() => {
-    console.log("No activity for 60 seconds. Shutting down...");
-    client.destroy();  // Disconnect the bot
-    process.exit();    // Exit process
-  }, 60000);  // 60 seconds
+// Function to log allowed commands to the website
+async function logCommandToWebsite(command) {
+  try {
+    await axios.post('http://your-website-url/log-command', { command });
+    console.log(`Logged command: ${command}`);
+  } catch (error) {
+    console.error("Error logging command to website:", error);
+  }
 }
 
-client.once('ready', () => {
-  console.log('Bot is online!');
-  resetShutdownTimer();
-});
-
+// Command handler for specific commands
 client.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
-  resetShutdownTimer();
-  await interaction.reply('Command received!');
+
+  const commandName = `/${interaction.commandName}`;
+  const allowedCommands = ['/ban'];  // List of commands that trigger the bot, e.g., ['/ban']
+
+  if (allowedCommands.includes(commandName)) {
+    logCommandToWebsite(commandName);  // Log the command to the website if it’s allowed
+  }
+
+  await interaction.reply(`Command ${commandName} received!`);
 });
 
-client.login(TOKEN).then(resetShutdownTimer);
+// Start the bot
+client.login(TOKEN);
