@@ -8,7 +8,7 @@ const client = new Client({
 // Function to log allowed commands to the website
 async function logCommandToWebsite(command) {
   try {
-    await axios.post('https://unnamedeveloper.github.io/bot/', { command });
+    await axios.post('https://topaz-aluminum-somersault.glitch.me', { command });
     console.log(`Logged command: ${command}`);
   } catch (error) {
     console.error("Error logging command to website:", error);
