@@ -1,31 +1,26 @@
-name: Run Discord Bot on Command Detection
+name: Run Discord Bot on Schedule
 
 on:
   schedule:
     - cron: "* * * * *"  # Runs every minute
 
 jobs:
-  check-website:
+  run-bot:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check Command Status
-        id: check_command
-        run: |
-          response=$(curl -s https://unnamedeveloper.github.io/bot/)
-          echo "response=$response" >> $GITHUB_ENV
-          if [[ "$response" == *"true"* ]]; then
-            echo "command_detected=true" >> $GITHUB_ENV
-          else
-            echo "command_detected=false" >> $GITHUB_ENV
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Start Bot if Command Detected
-        if: env.command_detected == 'true'
-        run: |
-          echo "Starting bot..."
-          node index.js &
-          sleep 60  # Keep the bot running for 60 seconds
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-      - name: Stop Workflow if No Commands
-        if: env.command_detected == 'false'
-        run: echo "No commands detected. Workflow ending."
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start Discord Bot
+        run: node index.js
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
