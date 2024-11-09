@@ -8,7 +8,7 @@ let commandName = null;
 // Endpoint to log specific commands
 app.post('/log-command', (req, res) => {
   const { command } = req.body;
-  const allowedCommands = ['/ban'];  // Specify commands that trigger the bot, e.g., ['/ban']
+  const allowedCommands = ['/ban', '/warn', '/mute'];  // Specify commands here that will trigger the bot
 
   if (allowedCommands.includes(command)) {
     commandReceived = true;
