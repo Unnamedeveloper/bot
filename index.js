@@ -8,7 +8,7 @@ const client = new Client({
 // Function to log allowed commands to the website
 async function logCommandToWebsite(command) {
   try {
-    await axios.post('https://topaz-aluminum-somersault.glitch.me', { command });
+    await axios.post('https://topaz-aluminum-somersault.glitch.me/log-command', { command });
     console.log(`Logged command: ${command}`);
   } catch (error) {
     console.error("Error logging command to website:", error);
@@ -20,7 +20,7 @@ client.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
 
   const commandName = `/${interaction.commandName}`;
-  const allowedCommands = ['/ban', '/warn', '/mute'];  // List commands that will trigger the bot
+  const allowedCommands = ['/ban'];  // Specify commands here that trigger the bot, e.g., ['/ban']
 
   if (allowedCommands.includes(commandName)) {
     logCommandToWebsite(commandName);  // Log the command to the website if it’s allowed
