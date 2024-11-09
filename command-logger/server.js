@@ -5,15 +5,10 @@ app.use(express.json());
 let commandReceived = false;
 let commandName = null;
 
-// Root endpoint to confirm the server is working
-app.get('/', (req, res) => {
-  res.send("Hello! The command-logger server is up and running.");
-});
-
 // Endpoint to log specific commands
 app.post('/log-command', (req, res) => {
   const { command } = req.body;
-  const allowedCommands = ['/ban', '/warn', '/mute'];  // Specify commands here that will trigger the bot
+  const allowedCommands = ['/ban'];  // Specify commands that trigger the bot, e.g., ['/ban']
 
   if (allowedCommands.includes(command)) {
     commandReceived = true;
