@@ -1,8 +1,8 @@
-name: Run Discord Bot with Auto-Restart
+name: Run Discord Bot
 
 on:
-  workflow_dispatch:  # Allows for manual start of the workflow
-  push:                # Runs on every push to the repository
+  workflow_dispatch:
+  push:
     branches:
       - main
 
@@ -11,32 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v3  # Updated to v3
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3  # Updated to v3
         with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Start Bot
-        run: node index.js
+          node-version: '18'  # Using Node.js 18 for compatibility with ReadableStream
+      - run: npm install
+      - run: node index.js
         env:
           TOKEN: ${{ secrets.TOKEN }}
-
-      # Self-Restart Step
-      - name: Schedule Restart Before Timeout
-        if: always()  # This runs even if previous steps fail
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Scheduling workflow restart..."
-          curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/YOUR_WORKFLOW_FILENAME.yml/dispatches" \
-            -d '{"ref":"main"}'
-        
-    timeout-minutes: 355  # Set timeout for just under 6 hours (355 minutes = 5 hours and 55 minutes)
